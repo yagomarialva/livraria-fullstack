@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: livraria_postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=livraria
+
+  backend:
+    build: 
+      context: ./livraria-backend
+      dockerfile: Dockerfile
+    container_name: livraria_backend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: 
+      context: ./livraria-frontend
+      dockerfile: Dockerfile
+    container_name: livraria_frontend
+    ports:
+      - "3001:3001"
+    depends_on:
+      - backend
